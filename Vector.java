@@ -22,6 +22,6 @@ public class Vector
     }
     public static Vector reflect(Vector a,Vector b)
     {
-        return subtractVectors(a,scale(b,2*((b.x*a.x)+(a.y+b.y))));
+        return subtractVectors(a,scale(b,2*((b.x*a.x)+(a.y*b.y))));
     }
 }

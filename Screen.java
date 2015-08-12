@@ -51,9 +51,10 @@ public class Screen extends JComponent
     }
     public void updateVariables()
     {
-        s1.updateVariables();
-        s2.updateVariables();
         b.updateVariables();
+        s1.updateVariables();
+        b.updateVariables();
+        s2.updateVariables();
     }
     public Slime getSlime1()
     {
