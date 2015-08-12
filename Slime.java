@@ -9,6 +9,10 @@ public class Slime extends Moveable
     private double ea;//half major axis 
     private double eb;//half minor axis
     
+    private CollisionNode[] nodes;//used to determine collisions
+    
+    public static final int nodeNumber = 10000;//number of nodes to be used;
+    
     private static final Vector DEFAULT_ELLIPSE_SIZE = new Vector(90,70);
     
     public static final int LEFT = 1;
@@ -26,6 +30,14 @@ public class Slime extends Moveable
         isLeft = initiallyLeft;
         ea = DEFAULT_ELLIPSE_SIZE.x/2;
         eb = DEFAULT_ELLIPSE_SIZE.y/2;
+        
+        //intializing collision nodes
+        nodes = new CollisionNode[nodeNumber];
+        for(int i=0;i<nodeNumber;i++)
+        {
+            double angle = Math.PI/nodeNumber*(double)i;
+            nodes[i] = new CollisionNode(new Vector(p.x+ea+Math.cos(angle)*ea,p.y+eb+Math.cos(angle)*eb),this);
+        }
     }
     
     public void draw(Graphics g)
@@ -67,6 +79,10 @@ public class Slime extends Moveable
     
     public void updateVariables()
     {
+        //used for collisionNodes
+        double initialPosX = p.x;
+        double initialPosY = p.y;
+        
         //STEP 1
         //UPDATES POSITION
         if(((p.x+v.x) > Global.LEFT_BOUND) && ((p.x+v.x) < Global.RIGHT_BOUND   )) //Establishes Left and Right bounds
@@ -148,6 +164,14 @@ public class Slime extends Moveable
         
         if (Math.abs(v.x)>Global.MAX_X_VELOCITY)
             v.x = Global.MAX_X_VELOCITY * vsign;//sets the velocity to the max.
+        
+            
+        //Make sure this is after all position updates
+        for(CollisionNode c : nodes)
+        {
+            c.getPos().x += p.x-initialPosX;
+            c.getPos().y += p.y-initialPosY;
+        }
     }
     
     public void setLeft()
@@ -175,6 +199,16 @@ public class Slime extends Moveable
     public int getWhichSlime()
     {
         return whichSlime;
+    }
+    
+    public CollisionNode[] getNodes()
+    {
+        return nodes;
+    }
+    
+    public CollisionNode getNodes(int i)
+    {
+        return nodes[i];
     }
     
     public double a()

@@ -55,4 +55,12 @@ public class Screen extends JComponent
         s2.updateVariables();
         b.updateVariables();
     }
+    public Slime getSlime1()
+    {
+        return s1;
+    }
+    public Slime getSlime2()
+    {
+        return s2;
+    }
 }
