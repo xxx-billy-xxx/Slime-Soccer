@@ -11,7 +11,7 @@ public class Slime extends Moveable
     
     private CollisionNode[] nodes;//used to determine collisions
     
-    public static final int nodeNumber = 29;//number of nodes to be used, dont make it a multiple of 10
+    public static final int nodeNumber = 499;//number of nodes to be used, dont make it a multiple of 10
     
     private static final Vector DEFAULT_ELLIPSE_SIZE = new Vector(90,70);
     

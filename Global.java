@@ -22,7 +22,7 @@ public class Global
     public static final double MAX_FALLING_SPEED = 2;
     public static final double JUMP_SPEED = 15;
     
-    public static final double MAX_X_VELOCITY_BALL = 20;
-    public static final double MAX_Y_VELOCITY_BALL = 20;
+    public static final double MAX_X_VELOCITY_BALL = 15;
+    public static final double MAX_Y_VELOCITY_BALL = 15;
     
 }
