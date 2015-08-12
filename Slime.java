@@ -11,7 +11,7 @@ public class Slime extends Moveable
     
     private CollisionNode[] nodes;//used to determine collisions
     
-    public static final int nodeNumber = 50;//number of nodes to be used;
+    public static final int nodeNumber = 29;//number of nodes to be used, dont make it a multiple of 10
     
     private static final Vector DEFAULT_ELLIPSE_SIZE = new Vector(90,70);
     
@@ -37,6 +37,7 @@ public class Slime extends Moveable
         {
             double angle = Math.PI/nodeNumber*(double)i;
             nodes[i] = new CollisionNode(new Vector(p.x+ea+Math.cos(angle)*ea,p.y+eb-(Math.sin(angle)*eb)),this);
+            System.out.println(nodes[i].getNormal().x +""+ nodes[i].getNormal().y);
         }
     }
     

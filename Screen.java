@@ -8,7 +8,7 @@ public class Screen extends JComponent
 {
     private JFrame frame;
     
-    private static Vector v1 = new Vector((int)(Global.WIDTH/2 - 17),485);//position of ball
+    private static Vector v1 = new Vector((int)(Global.WIDTH/2 - 17),300);//position of ball
     private static Vector v2 = new Vector(250,505);//position of slime1
     private static Vector v3 = new Vector(650,505);//position of slime2
         
