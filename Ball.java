@@ -79,7 +79,6 @@ public class Ball extends Moveable
             if(v.y>Global.MAX_Y_VELOCITY_BALL)v.y=Global.MAX_Y_VELOCITY_BALL;
             else if(v.y<-1*Global.MAX_Y_VELOCITY_BALL)v.y=-1*Global.MAX_Y_VELOCITY_BALL;
         }
-        System.out.println(v.x + "\t" +  v.y);
     }
 
     public boolean checkCollide(Slime s)
