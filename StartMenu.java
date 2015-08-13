@@ -7,13 +7,13 @@ import javax.imageio.*;
 
 public class StartMenu extends JComponent
 {
-    private JFrame frame;
+    private final SlimeFrame frame;
     
     private Selection[] selections;
     
     private int currentlySelected;
     
-    public StartMenu(JFrame f)
+    public StartMenu(SlimeFrame f)
     {
         frame = f;
         
@@ -40,6 +40,7 @@ public class StartMenu extends JComponent
         {
             public void enter()
             {
+                frame.startGame();
             }
         };
         
