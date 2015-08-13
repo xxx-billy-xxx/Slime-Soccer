@@ -8,7 +8,7 @@ public class Screen extends JComponent
 {
     private JFrame frame;
     
-    private static Vector v1 = new Vector((int)(Global.WIDTH/2 - 17),485);//position of ball
+    private static Vector v1 = new Vector((int)(Global.WIDTH/2 - 17),300);//position of ball
     private static Vector v2 = new Vector(250,505);//position of slime1
     private static Vector v3 = new Vector(650,505);//position of slime2
         
@@ -23,9 +23,10 @@ public class Screen extends JComponent
         super();
         
         frame = f;
+        frame.setSize(Global.WIDTH,Global.HEIGHT);
         back = new Background();
         
-        b = new Ball(this,v1,10); 
+        b = new Ball(this,v1,13); 
         s1 = new Slime(this, v3,Slime.SLIME1,true);        
         s2 = new Slime(this, v2,Slime.SLIME2,false);
         
@@ -50,8 +51,17 @@ public class Screen extends JComponent
     }
     public void updateVariables()
     {
-        s1.updateVariables();
-        s2.updateVariables();
         b.updateVariables();
+        s1.updateVariables();
+        b.updateVariables();
+        s2.updateVariables();
+    }
+    public Slime getSlime1()
+    {
+        return s1;
+    }
+    public Slime getSlime2()
+    {
+        return s2;
     }
 }
