@@ -25,4 +25,6 @@ public class Global
     public static final double MAX_X_VELOCITY_BALL = 20;
     public static final double MAX_Y_VELOCITY_BALL = 20;
     
+    
+    
 }

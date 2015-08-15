@@ -9,4 +9,6 @@ comment3.params=a\ scale
 comment3.target=Vector\ scale(Vector,\ double)
 comment4.params=a\ b
 comment4.target=Vector\ reflect(Vector,\ Vector)
-numComments=5
+comment5.params=
+comment5.target=double\ getMagnitude()
+numComments=6

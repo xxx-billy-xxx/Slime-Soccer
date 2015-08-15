@@ -2,7 +2,8 @@ import java.awt.*;
 
 public abstract class Moveable
 {
-    protected Vector p;         //position
+    protected Vector p;
+    protected Vector fp;//position
     protected Vector v;         //velocity
     protected Vector a;         //acceleration
     
@@ -13,17 +14,22 @@ public abstract class Moveable
     {
         screen = s;
         p = vector;
+        fp = vector;
         v = new Vector(0,0);
         a = new Vector(0,0);
     }
-    
     public Vector getPosition()
     {
         return p;
     }
-    public void setPosition(Vector vec)
+    public Vector getFPosition()
     {
-        p = vec;
+        return fp;
+    }
+    public void setFPosition(Vector vec)
+    {
+        p=fp;
+        fp = vec;
     }
     public Vector getVelocity()
     {

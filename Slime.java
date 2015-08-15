@@ -37,7 +37,6 @@ public class Slime extends Moveable
         {
             double angle = Math.PI/nodeNumber*(double)i;
             nodes[i] = new CollisionNode(new Vector(p.x+ea+Math.cos(angle)*ea,p.y+eb-(Math.sin(angle)*eb)),this);
-            System.out.println(nodes[i].getNormal().x +""+ nodes[i].getNormal().y);
         }
     }
     
@@ -77,6 +76,16 @@ public class Slime extends Moveable
             //g.fillOval((int)p.x +15, (int)p.y + 17, 3, 3);
         }
         
+    }
+    
+    public double getCenterX()
+    {
+        return p.x + ea;
+    }
+    
+    public double getCenterY()
+    {
+        return p.y + eb;
     }
     
     public void updateVariables()

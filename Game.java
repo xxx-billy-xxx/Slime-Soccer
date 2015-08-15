@@ -6,7 +6,7 @@ public class Game
     public static void main()
     {
         JFrame f = new JFrame("Super Slime Soccer");     
-                
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Screen s = new Screen(f);
        
 

@@ -37,21 +37,43 @@ public class Listener implements KeyListener
         Vector v = slime.getVelocity();
         if (key==left)
         {
-            slime.setLeft();
+            Thread t1 = new Thread()
+            {
+                public void run()
+                {
+                    slime.setLeft();
+                }
+            };
+            t1.start();
         }
         else if (key==right)
         {
-            slime.setRight();
+            Thread t1 = new Thread()
+            {
+                public void run()
+                {
+                    slime.setRight();
+                }
+            };
+            t1.start();
         }        
         else if (key==up && slime.getPosition().y == Global.FLOOR)
         {
-            v.y = -Global.JUMP_SPEED;
-            a.y = 0;
-            if(slime.getDirection() == Slime.LEFT)
-                slime.setLeft();
-            else if(slime.getDirection() == Slime.RIGHT)
-                slime.setRight();
-            //a.y = Global.GRAVITY_GOING_DOWN;
+            Thread t1 = new Thread()
+            {
+                public void run()
+                {
+                    v.y = -Global.JUMP_SPEED;
+                    a.y = 0;
+                    if(slime.getDirection() == Slime.LEFT)
+                        slime.setLeft();
+                    else if(slime.getDirection() == Slime.RIGHT)
+                        slime.setRight();
+                    //a.y = Global.GRAVITY_GOING_DOWN;
+                }
+            };
+            t1.start();
+            
         }
         else if (key==down)
         {
@@ -67,8 +89,17 @@ public class Listener implements KeyListener
         
         if (key==left)
         {
-            a.x = Global.XDECELERATION;
-            slime.setStill(); //It's in here instead of out there so that you can tap the jump key, let go, and not start declerating
+            Thread t1 = new Thread()
+            {
+                public void run()
+                {
+                    a.x = Global.XDECELERATION;
+                    slime.setStill();
+                    //a.y = Global.GRAVITY_GOING_DOWN;
+                }
+            };
+            t1.start();
+             //It's in here instead of out there so that you can tap the jump key, let go, and not start declerating
         }
         else if (key==right)
         {
