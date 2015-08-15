@@ -22,5 +22,5 @@ comment7.target=int\ getWhichSlime()
 comment8.params=
 comment8.target=CollisionNode[]\ getNodes()
 comment9.params=i
-comment9.target=CollisionNode\ getNodes(int)
+comment9.target=CollisionNode\ getNode(int)
 numComments=12

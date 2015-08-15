@@ -1,28 +1,30 @@
 public class CollisionNode
 {
-    private Vector v;
-    private Vector s;
+    private Vector p;
+    private Vector normal;
     
     public CollisionNode(Vector ve, Slime sl)
     {
-        v = ve;
-        s = new Vector(((v.y-sl.p.y-sl.b())/(v.x-sl.p.x-sl.a()))*((sl.b()*sl.b())/(sl.a()*sl.a())),1);
-        s = new Vector(s.x/(Math.sqrt((s.x*s.x)+(s.y*s.y))),s.y/(Math.sqrt((s.x*s.x)+(s.y*s.y))));
-        
+        p = ve;
+        normal = new Vector(((p.y-sl.p.y-sl.b())/(p.x-sl.p.x-sl.a()))*((sl.b()*sl.b())/(sl.a()*sl.a())),1);
+        normal = new Vector(normal.x/(Math.sqrt((normal.x*normal.x)+(normal.y*normal.y))),
+            normal.y/(Math.sqrt((normal.x*normal.x)+(normal.y*normal.y))));
     }
     
     public Vector getPos()
     {
-        return v;
+        return p;
     }
     
     public void setPos(Vector a)
     {
-        v = a;
+        p = a;
     }
     
     public Vector getNormal()
     {
-        return s;
+        return normal;
     }
 }
+
+//y1-

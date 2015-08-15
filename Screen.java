@@ -8,9 +8,9 @@ public class Screen extends JComponent
 {
     private JFrame frame;
     
-    private static Vector v1 = new Vector((int)(Global.WIDTH/2 - 17),300);//position of ball
-    private static Vector v2 = new Vector(250,505);//position of slime1
-    private static Vector v3 = new Vector(650,505);//position of slime2
+    private static final Vector v1 = new Vector((int)(Global.WIDTH/2 - 17),300);//position of ball
+    private static final Vector v2 = new Vector(250,505);//position of slime1
+    private static final Vector v3 = new Vector(650,505);//position of slime2
         
     private Ball b; 
     private Slime s1;
@@ -36,9 +36,9 @@ public class Screen extends JComponent
      public void paintComponent(Graphics g)
     {
         back.draw(g);
-        b.draw(g);
         s1.draw(g);
         s2.draw(g); 
+        b.draw(g);
     }
     public void run()
     {

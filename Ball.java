@@ -24,7 +24,7 @@ public class Ball extends Moveable
         else
         {
             //STEP 1
-            //UPDATES POSITION
+            //UPDATES POSITION AND VELOCITY
             if(((p.x+v.x) > Global.LEFT_BOUND+r) && ((p.x+v.x) < Global.RIGHT_BOUND+6*r)) //Establishes Left and Right bounds
             {
                 p = Vector.addVectors(p,v);
@@ -74,50 +74,62 @@ public class Ball extends Moveable
             }
 
             //STEP 4 CHECK BOUNDS
-            if(v.x>Global.MAX_X_VELOCITY_BALL)v.x=Global.MAX_X_VELOCITY_BALL;
-            else if(v.x<-1*Global.MAX_X_VELOCITY_BALL)v.x=-1*Global.MAX_X_VELOCITY_BALL;
-            if(v.y>Global.MAX_Y_VELOCITY_BALL)v.y=Global.MAX_Y_VELOCITY_BALL;
-            else if(v.y<-1*Global.MAX_Y_VELOCITY_BALL)v.y=-1*Global.MAX_Y_VELOCITY_BALL;
+            adjustVelocity();
         }
     }
 
-    public boolean checkCollide(Slime s)
+    public boolean checkCollide(Slime slime)
     {
         boolean collided = false;
-        if(p.y>s.p.y+s.b())
+        if(p.y>slime.p.y+slime.b())
         {
             //check which side collision nodes start on
-            if(p.x+r>s.getNodes(0).getPos().x&&p.x+r<=s.getNodes(s.nodeNumber-1).getPos().x)
+            if(centerX()>slime.getNode(0).getPos().x&&
+                centerX()<=slime.getNode(Slime.NODE_NUM-1).getPos().x)
             {
                 
                 v.y*=-1;
-                setVelocity(v.scale(v.addVectors(v,s.v),1));
-                if(v.x>Global.MAX_X_VELOCITY_BALL)v.x=Global.MAX_X_VELOCITY_BALL;
-                else if(v.x<-1*Global.MAX_X_VELOCITY_BALL)v.x=-1*Global.MAX_X_VELOCITY_BALL;
-                if(v.y>Global.MAX_Y_VELOCITY_BALL)v.y=Global.MAX_Y_VELOCITY_BALL;
-                else if(v.y<-1*Global.MAX_Y_VELOCITY_BALL)v.y=-1*Global.MAX_Y_VELOCITY_BALL;
-                collided = true;
+                v = v.scale(Vector.addVectors(v,slime.v),1);
+                return true;
             }
         }
         else
         {
-            for(CollisionNode c : s.getNodes())
+            for(CollisionNode c : slime.getNodes())
             {
-                if(r*r>Math.pow((p.x+v.x+r-c.getPos().x),2)+Math.pow((p.y+v.y+r-c.getPos().y),2))
+                if(r*r>Math.pow((centerX()+v.x-c.getPos().x),2)+Math.pow((centerY()+v.y-c.getPos().y),2))
                 {
                     double factor = ((1-v.x/Global.MAX_X_VELOCITY_BALL)+(1-v.y/Global.MAX_Y_VELOCITY_BALL))/2.0;
                     
                     setVelocity(v.reflect(v,c.getNormal()));
-                    setVelocity(v.scale(v.addVectors(v,s.v),1));
-                    if(v.x>Global.MAX_X_VELOCITY_BALL)v.x=Global.MAX_X_VELOCITY_BALL;
-                    else if(v.x<-1*Global.MAX_X_VELOCITY_BALL)v.x=-1*Global.MAX_X_VELOCITY_BALL;
-                    if(v.y>Global.MAX_Y_VELOCITY_BALL)v.y=Global.MAX_Y_VELOCITY_BALL;
-                    else if(v.y<-1*Global.MAX_Y_VELOCITY_BALL)v.y=-1*Global.MAX_Y_VELOCITY_BALL;
+                    setVelocity(v.scale(v.addVectors(v,slime.v),1));
+                    adjustVelocity();
                     collided = true;
                 }
             }
 
         }
         return collided;
+    }
+    
+    //adjusts velocity to make sure its less than max
+    public void adjustVelocity()
+    {
+        double vxsign = Math.abs(v.x)/v.x;
+        double vysign = Math.abs(v.y)/v.y;
+        if (Math.abs(v.x)>Global.MAX_X_VELOCITY_BALL)
+            v.x = Global.MAX_X_VELOCITY_BALL*vxsign;
+        if (Math.abs(v.y)>Global.MAX_Y_VELOCITY_BALL)
+            v.y = Global.MAX_Y_VELOCITY_BALL*vysign;
+    }
+    
+    public double centerX()
+    {
+        return p.x+r;
+    }
+    
+    public double centerY()
+    {
+        return p.y+r;
     }
 }
