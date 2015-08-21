@@ -109,88 +109,7 @@ public class Screen extends JComponent
         }
     }
 
-    /*public void checkCollide1(Slime s)
-    {
-        double bdx = b.v.x;
-        double sdx = s.v.x;
-        double bdy = b.v.y;
-        double sdy = s.v.y;
-        if(b.centerY()>s.centerY())//if ball is under slime
-        {
-            if(b.rightX()+bdx>s.leftX()+sdx  &&
-                b.leftX()+bdx<=s.rightX()+sdx)//if they intersect 
-            {
-                b.setVelocity(b.v.addVectors(b.v,s.v));
-                b.p.y = b.centerY();
-                b.v.y*=-1;
-            }
-        }
-        
-        /*else
-        {
-            double minDistance = b.getRadius()*b.getRadius();
-            double minimum = minDistance;
-            Vector normal = new Vector(1,0);
-            for(int i=1;i<s.getNodes().length;i++)
-            {
-                CollisionNode c1 = s.getNodes()[i-1];
-                CollisionNode c2 = s.getNodes()[i];
-                
-                double C = ((((-1)*(c2.getPos().y-c1.getPos().y))/((-1)*(c2.getPos().x-c1.getPos().x)))*c1.getPos().x)+c1.getPos().y;
-                double A = ((c2.getPos().y-c1.getPos().y)/(c2.getPos().x-c1.getPos()));
-                
-                distance = (Math.abs(A*b.centerX() + (-1)*b.centerY() + C))/(Math.sqrt(A*A+1));
-                
-                if(distance<minimum)
-                {
-                    normal.x = (-1)*(1/A);
-                    double magnitude = (Math.sqrt((normal.x*normal.x)+1));
-                    normal.x = normal.x/magnitude;
-                    normal.y = normal.y/magnitude;
-                }
-            }
-        }*/
-        /*else
-        {
-            final double r2 = (b.getRadius()*b.getRadius());
-            double minimum = r2;
-            
-            int minIndex = 0;
-            for(int i=0;i<s.getNodes().length;i++)
-            {
-                Vector cp = s.getNode(i).getPos();
-                double curDistance = Math.pow((b.centerX()-cp.x+sdx+bdx),2)+Math.pow((b.centerY()-cp.y+sdy+bdy),2);//d^2
-                if(curDistance<minimum)
-                {
-                    minimum = curDistance;
-                    minIndex = i;
-                }
-            }
-            
-            double delta = Math.sqrt(minimum/r2);
-            CollisionNode c = s.getNode(minIndex);
-            if(delta<1)//collided since d2<r2
-                {
-                    b.setVelocity(Vector.reflect(b.v,c.getNormal()));
-                    
-                    double slimeSpeed = s.v.getMagnitude();
-                    if(slimeSpeed>0)
-                    {
-                        Vector unitSlimeV = s.v.unitVector();
-                        Vector normal = c.getNormal();
-                        Vector dotProduct = unitSlimeV.scale(unitSlimeV.x*normal.x+ unitSlimeV.y*normal.y);
-                        dotProduct = dotProduct.scale(slimeSpeed);
-                        b.setVelocity(Vector.addVectors(b.v,dotProduct));
-                    }
-                    
-                    
-                    b.p.x = 250;//b.v.x*(b.getRadius()+b.a.x+b.v.x)*(1.0-delta)/(Math.sqrt((b.v.x*b.v.x)+(b.v.y*b.v.y)))+c.getPos().x;
-                    b.p.y = 250;//b.v.y*(b.getRadius()+b.a.y+b.v.y)*(1.0-delta)/(Math.sqrt((b.v.x*b.v.x)+(b.v.y*b.v.y)))+c.getPos().y;
-                    
-                    
-                }
-        }
-    }*/
+   
     
     /*
      */
@@ -202,10 +121,11 @@ public class Screen extends JComponent
         double sdy = s.v.y;
         
         //if ball is under the slime
-        if (b.centerY()>s.centerY())
+        if (b.centerY()+bdy>s.centerY()+sdy)
         {
             if(b.rightX()+bdx>s.leftX()+sdx  &&
-                b.leftX()+bdx<=s.rightX()+sdx)//if ball hits bottom of slime
+                b.leftX()+bdx<=s.rightX()+sdx && 
+                b.topY()+bdy < s.centerY()+sdy)//if ball hits bottom of slime
             {
                 
             }
@@ -236,7 +156,7 @@ public class Screen extends JComponent
                 double slimeSpeed = s.v.getMagnitude();
                 if(slimeSpeed>0)
                 {
-                    
+                    Vector.addVectors(b.v,s.v);
                 }
                 
                 b.setPos(new Vector(250,250));

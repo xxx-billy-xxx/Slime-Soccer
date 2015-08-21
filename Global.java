@@ -10,17 +10,20 @@ public class Global
     public static final double LEFT_BOUND = 30;
     public static final double RIGHT_BOUND  = 980;
     
+    public static final double XDECELERATION_BALL = .6;
+    public static final double YDECELERATION_BALL = .6;
+    
     public static final double XDECELERATION = .85;
     public static final double XACCELERATION = .35;
     public static final double GRAVITY_GOING_UP = 3;//when going up
     public static final double GRAVITY_GOING_DOWN = .45;//when going down
     
-    public static final double MAX_X_VELOCITY = 9.8;
+    public static final double MAX_X_VELOCITY = 12;
     public static final double MAX_FALLING_SPEED = 2;
     public static final double JUMP_SPEED = 15;
     
-    public static final double MAX_X_VELOCITY_BALL = 20;
-    public static final double MAX_Y_VELOCITY_BALL = 10;
+    public static final double MAX_X_VELOCITY_BALL = 30;
+    public static final double MAX_Y_VELOCITY_BALL = 30;
     
     
     
@@ -34,6 +37,6 @@ public class Global
     //If you're worried about visual hitches more than perfect timing, set this to 1.
     public static final int MAX_UPDATES_BEFORE_RENDER = 5;
     //If we are able to get as high as this FPS, don't render again.
-    public static final double TARGET_FPS = 60;
+    public static final double TARGET_FPS = 1200;
     public static final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
 }

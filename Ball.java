@@ -38,6 +38,16 @@ public class Ball extends Moveable
         return centerX()-r;
     }
     
+    public double topY()
+    {
+        return centerY()-r;
+    }
+    
+    public double bottomY()
+    {
+        return centerY()+r;
+    }
+    
     public double centerX()
     {
         return p.x+r;
@@ -65,11 +75,10 @@ public class Ball extends Moveable
 
     public void updateVariables()
     {
-        //maybe add that the closer slime to the ball will get collision detection first
         double ipx = p.x;
         double ipy = p.y;
             
-        a.y = .6;
+        a.y = Global.YDECELERATION_BALL;
         //STEP 1
         //UPDATES POSITION AND VELOCITY
         double futureX = p.x+v.x;
@@ -97,25 +106,21 @@ public class Ball extends Moveable
 
         //STEP 3 X ACCELERATION
         double vxsign = (v.x!=0) ? v.x/Math.abs(v.x) : 0;
-        double avx = Math.abs(v.x);
-        if(v.x>0)
+        /*double avx = Math.abs(v.x);
+        if(avx>0)
         {
             if(avx>1)a.x=-.05;
             else if(avx>.5)a.x=-.025;
             else if(avx>.1)a.x=-.001;
             else if(avx>.01)a.x=-.0001;
             else if(avx>.0001)a.x=-.0001;
-        }
-        a.x*=vxsign;
+        }*/
+        a.x*=-vxsign*Global.XDECELERATION_BALL;
         
         //v.x+=a.x;
         v = Vector.addVectors(v,a);
         
-        if (Math.abs(Math.abs(p.y)-Math.abs(ipy))>10)
-        {
-            int i = 0;
-        }
-
+       
         //STEP 4 CHECK BOUNDS
         boundVelocity();
     }

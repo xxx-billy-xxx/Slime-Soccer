@@ -16,8 +16,8 @@ public class CollisionNode
         double b = slime.b();
         double a = slime.a();
         double a2 = a*a;
-        double h = slime.p.x;
-        double k = slime.p.y;
+        double h = slime.p.x+a;
+        double k = slime.p.y+b;
         double dx = p.x-h;
         
         double slope = b*dx/(a2*Math.sqrt(1-dx*dx/a2));
