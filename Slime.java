@@ -10,8 +10,9 @@ public class Slime extends Moveable
     private double eb;//half minor axis
     
     private CollisionNode[] nodes;//used to determine collisions
+    private Line[] sides;//also used to determine collisions
     
-    public static final int nodeNumber = 29;//number of nodes to be used, dont make it a multiple of 10
+    public static final int NODE_NUM = 49;//number of nodes to be used, dont make it a multiple of 10
     
     private static final Vector DEFAULT_ELLIPSE_SIZE = new Vector(90,70);
     
@@ -22,9 +23,9 @@ public class Slime extends Moveable
     public static final int SLIME1 = 0;
     public static final int SLIME2 = 1;
     
-    public Slime(Screen s, Vector vector, int slimeNum, boolean initiallyLeft)
+    public Slime(Screen s, Vector pos, int slimeNum, boolean initiallyLeft)
     {
-        super(s, vector);
+        super(s, pos);
         direction = STILL;
         whichSlime = slimeNum;
         isLeft = initiallyLeft;
@@ -32,11 +33,17 @@ public class Slime extends Moveable
         eb = DEFAULT_ELLIPSE_SIZE.y/2;
         
         //intializing collision nodes
-        nodes = new CollisionNode[nodeNumber];
-        for(int i=0;i<nodeNumber;i++)
+        nodes = new CollisionNode[NODE_NUM];
+        for(int i=0;i<NODE_NUM;i++)
         {
-            double angle = Math.PI/nodeNumber*(double)i;
-            nodes[i] = new CollisionNode(new Vector(p.x+ea+Math.cos(angle)*ea,p.y+eb-(Math.sin(angle)*eb)),this);
+            double angle = i*Math.PI/NODE_NUM;
+            nodes[i] = new CollisionNode(new Vector(centerX()-Math.cos(angle)*ea,centerY()-(Math.sin(angle)*eb)),this);
+        }
+        
+        sides = new Line[NODE_NUM-1];
+        for (int i = 0; i < NODE_NUM-1; i++)
+        {
+            sides[i] = new Line(nodes[i],nodes[i+1]);
         }
     }
     
@@ -78,12 +85,12 @@ public class Slime extends Moveable
         
     }
     
-    public double getCenterX()
+    public double centerX()
     {
         return p.x + ea;
     }
     
-    public double getCenterY()
+    public double centerY()
     {
         return p.y + eb;
     }
@@ -130,7 +137,7 @@ public class Slime extends Moveable
             
         //STEP 3
         //UPDATES X ACCELERATION
-        double vsign = v.x/Math.abs(v.x);//this is either 1 or -1 for use in keeping the direction constant
+        double vsign = v.x==0 ? 0 : v.x/Math.abs(v.x);//this is either 1 or -1 for use in keeping the direction constant
         
         /*if(direction==LEFT && v.x<0) //Prevents derpy turnaround accelerations 
             a.x = -Global.XACCELERATION;
@@ -156,11 +163,6 @@ public class Slime extends Moveable
         }
         else //direction==STILL
         {
-            /*if(Math.abs(v.x) <= Global.XDECELERATION && Math.abs(a.x) == Global.XDECELERATION)
-            {
-                a.x = 0;
-                v.x = 0;
-            }*/
             if (v.x==0)
                 a.x = 0;
             else 
@@ -217,9 +219,29 @@ public class Slime extends Moveable
         return nodes;
     }
     
-    public CollisionNode getNodes(int i)
+    public Line[] getSides()
+    {
+        return sides;
+    }
+    
+    public Line getSide(int i)
+    {
+        return sides[i];
+    }
+    
+    public CollisionNode getNode(int i)
     {
         return nodes[i];
+    }
+    
+    public double leftX()
+    {
+        return nodes[0].getPos().x;
+    }
+    
+    public double rightX()
+    {
+        return nodes[nodes.length-1].getPos().x;
     }
     
     public double a()

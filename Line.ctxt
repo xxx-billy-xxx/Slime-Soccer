@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=a\ b
+comment0.target=Line(CollisionNode,\ CollisionNode)
+comment1.params=point
+comment1.target=boolean\ contains(Vector)
+comment2.params=
+comment2.target=Vector\ getVector()
+comment3.params=
+comment3.target=Vector\ normal()
+comment4.params=
+comment4.target=Vector\ getStart()
+comment5.params=
+comment5.target=Vector\ getEnd()
+numComments=6

@@ -1,10 +1,14 @@
 #BlueJ class context
-comment0.params=ve\ sl
+comment0.params=pos\ sl
 comment0.target=CollisionNode(Vector,\ Slime)
 comment1.params=
-comment1.target=Vector\ getPos()
-comment2.params=a
-comment2.target=void\ setPos(Vector)
+comment1.target=Vector\ calculateNormal()
+comment2.params=delta
+comment2.target=void\ move(Vector)
 comment3.params=
-comment3.target=Vector\ getNormal()
-numComments=4
+comment3.target=Vector\ getPos()
+comment4.params=a
+comment4.target=void\ setPos(Vector)
+comment5.params=
+comment5.target=Vector\ getNormal()
+numComments=6

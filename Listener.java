@@ -33,8 +33,8 @@ public class Listener implements KeyListener
     public void keyPressed(KeyEvent e)
     {
         int key = e.getKeyCode();
-        Vector a = slime.getAcceleration();
-        Vector v = slime.getVelocity();
+        final Vector a = slime.getAcceleration();
+        final Vector v = slime.getVelocity();
         if (key==left)
         {
             Thread t1 = new Thread()
@@ -57,7 +57,7 @@ public class Listener implements KeyListener
             };
             t1.start();
         }        
-        else if (key==up && slime.getPosition().y == Global.FLOOR)
+        else if (key==up && slime.getPos().y == Global.FLOOR)
         {
             Thread t1 = new Thread()
             {
@@ -85,7 +85,7 @@ public class Listener implements KeyListener
     public void keyReleased(KeyEvent e)
     {
         int key = e.getKeyCode();
-        Vector a = slime.getAcceleration();
+        final Vector a = slime.getAcceleration();
         
         if (key==left)
         {

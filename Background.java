@@ -17,6 +17,6 @@ public class Background
     
     public void draw(Graphics g)
     {
-        g.drawImage(image,0,0,null);
+        g.drawImage(image,0,0,Global.WIDTH,Global.HEIGHT,null);
     }
 }

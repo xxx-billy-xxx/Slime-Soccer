@@ -1,28 +1,50 @@
 public class CollisionNode
 {
-    private Vector v;
-    private Vector s;
+    private Vector p;
+    private final Vector normal;
+    private Slime slime;
     
-    public CollisionNode(Vector ve, Slime sl)
+    public CollisionNode(Vector pos, Slime sl)
     {
-        v = ve;
-        s = new Vector(((v.y-sl.p.y-sl.b())/(v.x-sl.p.x-sl.a()))*((sl.b()*sl.b())/(sl.a()*sl.a())),-1);
-        s = new Vector(s.x/(Math.sqrt((s.x*s.x)+(s.y*s.y))),s.y/(Math.sqrt((s.x*s.x)+(s.y*s.y))));
+        slime = sl;
+        p = pos;
+        normal = calculateNormal();
+    }
+    
+    private Vector calculateNormal()
+    {
+        double b = slime.b();
+        double a = slime.a();
+        double a2 = a*a;
+        double h = slime.p.x;
+        double k = slime.p.y;
+        double dx = p.x-h;
         
+        double slope = b*dx/(a2*Math.sqrt(1-dx*dx/a2));
+        double perp = -1/slope;
+        
+        double ny = -1;//y part has to be negative since its always going up!
+        double nx = -1/perp;//since ny/nx should be perp
+        return new Vector(nx,ny);//.unitVector();
+    }
+    
+    public void move(Vector delta)
+    {
+        p = Vector.addVectors(p,delta);
     }
     
     public Vector getPos()
     {
-        return v;
+        return p;
     }
     
     public void setPos(Vector a)
     {
-        v = a;
+        p = a;
     }
     
     public Vector getNormal()
     {
-        return s;
+        return normal;
     }
 }

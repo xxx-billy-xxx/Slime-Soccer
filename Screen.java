@@ -9,11 +9,9 @@ public class Screen extends JComponent
     private JFrame frame;
 
     private static float interpolation = 0;
-    private static Vector v1 = new Vector((int)(Global.WIDTH/2 - 17),300);//position of ball
-    private static Vector v2 = new Vector(250,505);//position of slime1
-    private static Vector v3 = new Vector(650,505);//position of slime2
-    
-  
+    private static final Vector v1 = new Vector((int)(Global.WIDTH/2 - 17),300);//position of ball
+    private static final Vector v2 = new Vector(250,505);//position of slime1
+    private static final Vector v3 = new Vector(650,505);//position of slime2
 
     private Ball b; 
     private Slime s1;
@@ -56,49 +54,38 @@ public class Screen extends JComponent
             updateVariables();
             repaint();            
             try{Thread.sleep(37);}catch(InterruptedException e){}   //40
-
-            //This value would probably be stored elsewhere.
-            final double GAME_HERTZ = 480;
-            //Calculate how many ns each frame should take for our target game hertz.
-            final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
-            //At the very most we will update the game this many times before a new render.
-            //If you're worried about visual hitches more than perfect timing, set this to 1.
-            final int MAX_UPDATES_BEFORE_RENDER = 5;
+            
+            
             //We will need the last update time.
             double lastUpdateTime = System.nanoTime();
             //Store the last time we rendered.
             double lastRenderTime = System.nanoTime();
 
-            //If we are able to get as high as this FPS, don't render again.
-            final double TARGET_FPS = 60;
-            final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
-
             //Simple way of finding FPS.
             int lastSecondTime = (int) (lastUpdateTime / 1000000000);
 
-            
-                double now = System.nanoTime();
-                int updateCount = 0;
+            double now = System.nanoTime();
+            int updateCount = 0;
 
                 //if (!paused)
                 //{
                     //Do as many game updates as we need to, potentially playing catchup.
-                    while( now - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER )
+                    while( now - lastUpdateTime > Global.TIME_BETWEEN_UPDATES && updateCount < Global.MAX_UPDATES_BEFORE_RENDER )
                     {
                         updateVariables();
-                        lastUpdateTime += TIME_BETWEEN_UPDATES;
+                        lastUpdateTime += Global.TIME_BETWEEN_UPDATES;
                         updateCount++;
                     }
 
                     //If for some reason an update takes forever, we don't want to do an insane number of catchups.
                     //If you were doing some sort of game that needed to keep EXACT time, you would get rid of this.
-                    if ( now - lastUpdateTime > TIME_BETWEEN_UPDATES)
+                    if ( now - lastUpdateTime > Global.TIME_BETWEEN_UPDATES)
                     {
-                        lastUpdateTime = now - TIME_BETWEEN_UPDATES;
+                        lastUpdateTime = now - Global.TIME_BETWEEN_UPDATES;
                     }
 
                     //Render. To do so, we need to calculate interpolation for a smooth render.
-                    float i = Math.min(1.0f, (float) ((now - lastUpdateTime) / TIME_BETWEEN_UPDATES) );
+                    float i = Math.min(1.0f, (float) ((now - lastUpdateTime) / Global.TIME_BETWEEN_UPDATES) );
                     interpolation = i;
                     repaint();
                     lastRenderTime = now;
@@ -106,7 +93,7 @@ public class Screen extends JComponent
                     
 
                     //Yield until it has been at least the target time between renders. This saves the CPU from hogging.
-                    while ( now - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS && now - lastUpdateTime < TIME_BETWEEN_UPDATES)
+                    while ( now - lastRenderTime < Global.TARGET_TIME_BETWEEN_RENDERS && now - lastUpdateTime < Global.TIME_BETWEEN_UPDATES)
                     {
                         Thread.yield();
 
@@ -122,20 +109,20 @@ public class Screen extends JComponent
         }
     }
 
-    public void checkCollide(Slime s)
+    /*public void checkCollide1(Slime s)
     {
-        
-        
-        if(b.getCenterY()>s.getCenterY())
+        double bdx = b.v.x;
+        double sdx = s.v.x;
+        double bdy = b.v.y;
+        double sdy = s.v.y;
+        if(b.centerY()>s.centerY())//if ball is under slime
         {
-            if(b.getCenterX()+b.getRadius()+b.v.x+b.a.x>s.getNodes(0).getPos().x+s.v.x&&b.getCenterX()-b.getRadius()+b.v.x+b.a.x<=s.getNodes(s.nodeNumber-1).getPos().x+s.v.x)
+            if(b.rightX()+bdx>s.leftX()+sdx  &&
+                b.leftX()+bdx<=s.rightX()+sdx)//if they intersect 
             {
-                b.setVelocity(b.v.scale(b.v.addVectors(b.v,s.v),1));
-                
-                b.p.y = b.getCenterY();
-                b.v.y*=-1.0;
-                
-                
+                b.setVelocity(b.v.addVectors(b.v,s.v));
+                b.p.y = b.centerY();
+                b.v.y*=-1;
             }
         }
         
@@ -152,7 +139,7 @@ public class Screen extends JComponent
                 double C = ((((-1)*(c2.getPos().y-c1.getPos().y))/((-1)*(c2.getPos().x-c1.getPos().x)))*c1.getPos().x)+c1.getPos().y;
                 double A = ((c2.getPos().y-c1.getPos().y)/(c2.getPos().x-c1.getPos()));
                 
-                distance = (Math.abs(A*b.getCenterX() + (-1)*b.getCenterY() + C))/(Math.sqrt(A*A+1));
+                distance = (Math.abs(A*b.centerX() + (-1)*b.centerY() + C))/(Math.sqrt(A*A+1));
                 
                 if(distance<minimum)
                 {
@@ -163,35 +150,37 @@ public class Screen extends JComponent
                 }
             }
         }*/
-        else
+        /*else
         {
-            double minDistance = (b.getRadius()*b.getRadius());
-            double minimum = minDistance;
+            final double r2 = (b.getRadius()*b.getRadius());
+            double minimum = r2;
+            
             int minIndex = 0;
             for(int i=0;i<s.getNodes().length;i++)
             {
-                CollisionNode c = s.getNodes()[i];
-                double curDistance = Math.pow((b.getCenterX()-c.getPos().x+s.v.x+s.a.x+b.v.x+b.a.x),2)+Math.pow((b.getCenterY()-c.getPos().y+s.v.y+s.a.y+b.a.y+b.v.y),2);
+                Vector cp = s.getNode(i).getPos();
+                double curDistance = Math.pow((b.centerX()-cp.x+sdx+bdx),2)+Math.pow((b.centerY()-cp.y+sdy+bdy),2);//d^2
                 if(curDistance<minimum)
                 {
                     minimum = curDistance;
                     minIndex = i;
                 }
-                
-                
             }
             
-            double delta = Math.sqrt(minimum/minDistance);
-            CollisionNode c = s.getNodes(minIndex);
-            if(delta<1.0)
+            double delta = Math.sqrt(minimum/r2);
+            CollisionNode c = s.getNode(minIndex);
+            if(delta<1)//collided since d2<r2
                 {
-                    b.setVelocity(b.v.reflect(b.v,c.getNormal()));
-                    if(s.v.getMagnitude()!=0)
+                    b.setVelocity(Vector.reflect(b.v,c.getNormal()));
+                    
+                    double slimeSpeed = s.v.getMagnitude();
+                    if(slimeSpeed>0)
                     {
-                        Vector unitSlimeVelocity = Vector.scale(s.v,(1.0/s.v.getMagnitude()));
-                        Vector dotProduct = Vector.scale(unitSlimeVelocity,(unitSlimeVelocity.x*c.getNormal().x+unitSlimeVelocity.y*c.getNormal().y));
-                        dotProduct = Vector.scale(dotProduct,s.v.getMagnitude());
-                        b.setVelocity(b.v.addVectors(b.v,dotProduct));
+                        Vector unitSlimeV = s.v.unitVector();
+                        Vector normal = c.getNormal();
+                        Vector dotProduct = unitSlimeV.scale(unitSlimeV.x*normal.x+ unitSlimeV.y*normal.y);
+                        dotProduct = dotProduct.scale(slimeSpeed);
+                        b.setVelocity(Vector.addVectors(b.v,dotProduct));
                     }
                     
                     
@@ -201,11 +190,64 @@ public class Screen extends JComponent
                     
                 }
         }
+    }*/
+    
+    /*
+     */
+    public void checkCollide(Slime s)
+    {
+        double bdx = b.v.x;
+        double bdy = b.v.y;
+        double sdx = s.v.x;
+        double sdy = s.v.y;
+        
+        //if ball is under the slime
+        if (b.centerY()>s.centerY())
+        {
+            if(b.rightX()+bdx>s.leftX()+sdx  &&
+                b.leftX()+bdx<=s.rightX()+sdx)//if ball hits bottom of slime
+            {
+                
+            }
+        }
+        else //finds the closest collision node and collides with it if it intersects
+        {
+            final double R2 = Math.pow(b.getRadius(),2);
+            double minimum = R2;
+            int minIndex = 0;
+            for(int i=0;i<Slime.NODE_NUM;i++)
+            {
+                Vector cp = s.getNode(i).getPos();
+                Vector distanceAtCollision = new Vector(b.centerX()+bdx-(cp.x+sdx), b.centerY()+bdy-(cp.y+sdy));
+                double d2 = distanceAtCollision.r2();
+                //System.out.println(d2);
+                if(d2<minimum)
+                {
+                    minimum = d2;
+                    minIndex = i;
+                }
+            }
+            
+            CollisionNode c = s.getNode(minIndex);
+            if(minimum<R2)//collided since d2<r2
+            {
+                b.setVelocity(Vector.reflect(b.v,c.getNormal()));
+                
+                double slimeSpeed = s.v.getMagnitude();
+                if(slimeSpeed>0)
+                {
+                    
+                }
+                
+                b.setPos(new Vector(250,250));
+                //b.v.x*(b.getRadius()+b.a.x+b.v.x)*(1.0-delta)/(Math.sqrt((b.v.x*b.v.x)+(b.v.y*b.v.y)))+c.getPos().x;
+                //b.v.y*(b.getRadius()+b.a.y+b.v.y)*(1.0-delta)/(Math.sqrt((b.v.x*b.v.x)+(b.v.y*b.v.y)))+c.getPos().y;
+            }
+        }
     }
 
     public void updateVariables()
     {
-        
         b.updateVariables();
         s1.updateVariables();
         s2.updateVariables();

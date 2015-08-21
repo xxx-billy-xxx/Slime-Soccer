@@ -9,6 +9,7 @@ comment3.params=
 comment3.target=void\ run()
 comment4.params=s
 comment4.target=void\ checkCollide(Slime)
+comment4.text=\n
 comment5.params=
 comment5.target=void\ updateVariables()
 comment6.params=

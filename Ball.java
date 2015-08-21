@@ -23,86 +23,111 @@ public class Ball extends Moveable
     {
         //g.setColor(Color.BLACK);
         //g.drawOval((int)p.x, (int)p.y, (int)r*2,(int)r*2);
-        g.drawImage(image,(int)p.x, (int)p.y, null);
+        g.drawImage(image,(int)p.x, (int)p.y, (int)r*2, (int)r*2, null);
         //g.setColor(Color.WHITE);
         //g.fillOval((int)p.x, (int)p.y, (int)r*2,(int)r*2);
     }
     
-    public double getCenterX()
+    public double rightX()
+    {
+        return centerX()+r;
+    }
+    
+    public double leftX()
+    {
+        return centerX()-r;
+    }
+    
+    public double centerX()
     {
         return p.x+r;
     }
     
-    public double getCenterY()
+    public double centerY()
     {
         return p.y+r;
+    }
+    
+    public Vector center()
+    {
+        return new Vector(centerX(),centerY());
     }
     
     public double getRadius()
     {
         return r;
     }
+    
+    public double r2()
+    {
+        return r*r;
+    }
 
     public void updateVariables()
     {
         //maybe add that the closer slime to the ball will get collision detection first
+        double ipx = p.x;
+        double ipy = p.y;
             
-            a.y = .6;
-            //STEP 1
-            //UPDATES POSITION
-            if(((p.x+v.x) > Global.LEFT_BOUND+r) && ((p.x+v.x) < Global.RIGHT_BOUND+6*r)) //Establishes Left and Right bounds
-            {
-                p = Vector.addVectors(p,v);
-                v = Vector.addVectors(v,a);
-            }
-            else //Stops you from moving past the bounds
-            {
-                v.x*=-1;
-                v = Vector.addVectors(v,a);
-            }
-
-            //STEP 2
-            //UPDATES Y ACCELERATION
-            if(p.y>Global.FLOOR) //Creates a floor so my slimes don't fall into the pits of hell
-            {
-                p.y = Global.FLOOR;
-                v.y*=-.85;
-            }
-            else if(p.y<0)
-            {
-                p.y=0;
-                v.y*=-.85;
-                v.y+=a.y;
-            }
-
-            //if(v.y<.0001)v.y=0;
-
-            //STEP 3 X ACCELERATION
-            if(v.x>0)
-            {
-                if(v.x>1)a.x=-.05;
-                else if(v.x>.5)a.x=-.025;
-                else if(v.x>.1)a.x=-.001;
-                else if(v.x>.01)a.x=-.0001;
-                else if(v.x>.0001)a.x=-.0001;
-            }
-            else if(v.x<0)
-            {
-                if(v.x>-1)a.x=.05;
-                else if(v.x>-.5)a.x=.025;
-                else if(v.x>-.1)a.x=.001;
-                else if(v.x>-.01)a.x=.0001;
-                else if(v.x>-.0001)a.x=.0001;
-            }
-            v.x+=a.x;
-
-            //STEP 4 CHECK BOUNDS
-            if(v.x>Global.MAX_X_VELOCITY_BALL)v.x=Global.MAX_X_VELOCITY_BALL;
-            else if(v.x<-1*Global.MAX_X_VELOCITY_BALL)v.x=-1*Global.MAX_X_VELOCITY_BALL;
-            if(v.y>Global.MAX_Y_VELOCITY_BALL)v.y=Global.MAX_Y_VELOCITY_BALL;
-            else if(v.y<-1*Global.MAX_Y_VELOCITY_BALL)v.y=-1*Global.MAX_Y_VELOCITY_BALL;
+        a.y = .6;
+        //STEP 1
+        //UPDATES POSITION AND VELOCITY
+        double futureX = p.x+v.x;
+        if((futureX > Global.LEFT_BOUND+r) && (futureX < Global.RIGHT_BOUND+6*r)) //Establishes Left and Right bounds
+            p = Vector.addVectors(p,v);
+        else //Stops you from moving past the bounds
+        {
+            p.y+=v.y;
+            v.x*=-1.0;
+        }
         
-    }
 
+        //STEP 2
+        //BOUNDS Y POSITION
+        if(p.y>Global.FLOOR) //Creates a floor
+        {
+            p.y = Global.FLOOR;
+            v.y*=-.85;
+        }
+        else if(p.y<0)//creates ceiling
+        {
+            p.y=0;
+            v.y*=-.85;
+        }
+
+        //STEP 3 X ACCELERATION
+        double vxsign = (v.x!=0) ? v.x/Math.abs(v.x) : 0;
+        double avx = Math.abs(v.x);
+        if(v.x>0)
+        {
+            if(avx>1)a.x=-.05;
+            else if(avx>.5)a.x=-.025;
+            else if(avx>.1)a.x=-.001;
+            else if(avx>.01)a.x=-.0001;
+            else if(avx>.0001)a.x=-.0001;
+        }
+        a.x*=vxsign;
+        
+        //v.x+=a.x;
+        v = Vector.addVectors(v,a);
+        
+        if (Math.abs(Math.abs(p.y)-Math.abs(ipy))>10)
+        {
+            int i = 0;
+        }
+
+        //STEP 4 CHECK BOUNDS
+        boundVelocity();
+    }
     
+    private void boundVelocity()
+    {
+        double vxsign = v.x==0 ? 0 : v.x/Math.abs(v.x);
+        double vysign = v.y==0 ? 0 : v.y/Math.abs(v.y);
+        
+        if(Math.abs(v.x)>Global.MAX_X_VELOCITY_BALL)
+            v.x=vxsign*Global.MAX_X_VELOCITY_BALL;
+        if(Math.abs(v.y)>Global.MAX_Y_VELOCITY_BALL)
+            v.y=vysign*Global.MAX_Y_VELOCITY_BALL;
+    }
 }
