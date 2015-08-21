@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=
+comment0.target=void\ playBackground()
+comment1.params=
+comment1.target=void\ pauseBackground()
+comment2.params=
+comment2.target=void\ stopBackground()
+comment3.params=
+comment3.target=void\ soundEffects()
+comment4.params=filename
+comment4.target=java.net.URL\ getLocation(java.lang.String)
+numComments=5

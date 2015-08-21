@@ -11,7 +11,7 @@ public class Slime extends Moveable
     
     private CollisionNode[] nodes;//used to determine collisions
     
-    public static final int NODE_NUM = 499;//number of nodes to be used, dont make it a multiple of 10
+    public static final int nodeNumber = 29;//number of nodes to be used, dont make it a multiple of 10
     
     private static final Vector DEFAULT_ELLIPSE_SIZE = new Vector(90,70);
     
@@ -32,12 +32,11 @@ public class Slime extends Moveable
         eb = DEFAULT_ELLIPSE_SIZE.y/2;
         
         //intializing collision nodes
-        nodes = new CollisionNode[NODE_NUM];
-        for(int i=0;i<nodes.length;i++)
+        nodes = new CollisionNode[nodeNumber];
+        for(int i=0;i<nodeNumber;i++)
         {
-            double angle = i*Math.PI/NODE_NUM;
+            double angle = Math.PI/nodeNumber*(double)i;
             nodes[i] = new CollisionNode(new Vector(p.x+ea+Math.cos(angle)*ea,p.y+eb-(Math.sin(angle)*eb)),this);
-            System.out.println(nodes[i].getNormal().x +""+ nodes[i].getNormal().y);
         }
     }
     
@@ -79,6 +78,16 @@ public class Slime extends Moveable
         
     }
     
+    public double getCenterX()
+    {
+        return p.x + ea;
+    }
+    
+    public double getCenterY()
+    {
+        return p.y + eb;
+    }
+    
     public void updateVariables()
     {
         //used for collisionNodes
@@ -94,7 +103,7 @@ public class Slime extends Moveable
         }
         else //Stops you from moving past the bounds
         {
-            p.y += v.y;
+            p.y = p.y + v.y;
             v = Vector.addVectors(v,a);
         }
         
@@ -123,6 +132,14 @@ public class Slime extends Moveable
         //UPDATES X ACCELERATION
         double vsign = v.x/Math.abs(v.x);//this is either 1 or -1 for use in keeping the direction constant
         
+        /*if(direction==LEFT && v.x<0) //Prevents derpy turnaround accelerations 
+            a.x = -Global.XACCELERATION;
+        else if(direction==RIGHT && v.x>0)
+            a.x = Global.XACCELERATION;
+        else if(v.x<0 && direction ==STILL)
+            a.x = Global.XDECELERATION;
+        else if(v.x>0 && direction ==STILL)
+            a.x = -Global.XDECELERATION;  */
         if (direction==LEFT)
         {
             if (v.x <= 0)
@@ -139,6 +156,11 @@ public class Slime extends Moveable
         }
         else //direction==STILL
         {
+            /*if(Math.abs(v.x) <= Global.XDECELERATION && Math.abs(a.x) == Global.XDECELERATION)
+            {
+                a.x = 0;
+                v.x = 0;
+            }*/
             if (v.x==0)
                 a.x = 0;
             else 
@@ -195,7 +217,7 @@ public class Slime extends Moveable
         return nodes;
     }
     
-    public CollisionNode getNode(int i)
+    public CollisionNode getNodes(int i)
     {
         return nodes[i];
     }
