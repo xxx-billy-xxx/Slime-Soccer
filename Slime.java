@@ -95,6 +95,11 @@ public class Slime extends Moveable
         return p.y + eb;
     }
     
+    public Vector center()
+    {
+        return new Vector(centerX(),centerY());
+    }
+    
     public void updateVariables()
     {
         //used for collisionNodes
@@ -185,6 +190,16 @@ public class Slime extends Moveable
             c.getPos().x += p.x-initialPosX;
             c.getPos().y += p.y-initialPosY;
         }
+    }
+    
+    public boolean contains(Vector pos)
+    {
+        Vector v = Vector.subtractVectors(pos,center());
+        if (Math.abs(v.x)>=ea || pos.y>centerY())
+            return false;
+        
+        double y = eb*Math.sqrt(1-v.x*v.x/Math.pow(ea,2));
+        return Math.abs(v.y)<y;
     }
     
     public void setLeft()

@@ -75,6 +75,7 @@ public class Ball extends Moveable
 
     public void updateVariables()
     {
+        boundVelocity();
         double ipx = p.x;
         double ipy = p.y;
             
@@ -115,10 +116,14 @@ public class Ball extends Moveable
             else if(avx>.01)a.x=-.0001;
             else if(avx>.0001)a.x=-.0001;
         }*/
-        a.x*=-vxsign*Global.XDECELERATION_BALL;
+        a.x=-vxsign*Global.XDECELERATION_BALL;
         
         //v.x+=a.x;
-        v = Vector.addVectors(v,a);
+        v.y+=a.y;
+        if (Math.abs(v.x)>=Math.abs(a.x))
+            v.x+=a.x;
+        else v.x=0;
+        
         
        
         //STEP 4 CHECK BOUNDS

@@ -127,6 +127,9 @@ public class Screen extends JComponent
                 b.leftX()+bdx<=s.rightX()+sdx && 
                 b.topY()+bdy < s.centerY()+sdy)//if ball hits bottom of slime
             {
+                //b.setVelocity(Vector.reflect(b.v,new Vector(0,1)));
+                
+                b.v.y*=-1;
                 
             }
         }
@@ -149,17 +152,26 @@ public class Screen extends JComponent
             }
             
             CollisionNode c = s.getNode(minIndex);
+            double ballToSlime = Vector.subtractVectors(b.center(),s.center()).getMagnitude();
+            double nodeToSlime = Vector.subtractVectors(c.getPos(),s.center()).getMagnitude();
             if(minimum<R2)//collided since d2<r2
             {
-                b.setVelocity(Vector.reflect(b.v,c.getNormal()));
-                
-                double slimeSpeed = s.v.getMagnitude();
-                if(slimeSpeed>0)
+                if (ballToSlime < nodeToSlime)//ball is inside slime
                 {
-                    Vector.addVectors(b.v,s.v);
+                    
+                }
+                else
+                {
+                    b.setVelocity(Vector.reflect(b.v,c.getNormal()));
+                    
+                    double slimeSpeed = s.v.getMagnitude();
+                    if(slimeSpeed>0)
+                    {
+                        b.setVelocity(Vector.addVectors(b.v,s.v));
+                    }
                 }
                 
-                b.setPos(new Vector(250,250));
+                //b.setPos(new Vector(250,250));
                 //b.v.x*(b.getRadius()+b.a.x+b.v.x)*(1.0-delta)/(Math.sqrt((b.v.x*b.v.x)+(b.v.y*b.v.y)))+c.getPos().x;
                 //b.v.y*(b.getRadius()+b.a.y+b.v.y)*(1.0-delta)/(Math.sqrt((b.v.x*b.v.x)+(b.v.y*b.v.y)))+c.getPos().y;
             }

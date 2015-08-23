@@ -10,8 +10,8 @@ public class Global
     public static final double LEFT_BOUND = 30;
     public static final double RIGHT_BOUND  = 980;
     
-    public static final double XDECELERATION_BALL = .6;
-    public static final double YDECELERATION_BALL = .6;
+    public static final double XDECELERATION_BALL = .05;
+    public static final double YDECELERATION_BALL = .8;
     
     public static final double XDECELERATION = .85;
     public static final double XACCELERATION = .35;
@@ -22,8 +22,8 @@ public class Global
     public static final double MAX_FALLING_SPEED = 2;
     public static final double JUMP_SPEED = 15;
     
-    public static final double MAX_X_VELOCITY_BALL = 30;
-    public static final double MAX_Y_VELOCITY_BALL = 30;
+    public static final double MAX_X_VELOCITY_BALL = 35;
+    public static final double MAX_Y_VELOCITY_BALL = 35;
     
     
     

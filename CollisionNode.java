@@ -22,6 +22,8 @@ public class CollisionNode
         
         double slope = b*dx/(a2*Math.sqrt(1-dx*dx/a2));
         double perp = -1/slope;
+        //if (dx!=0)
+          //  perp*=-1/dx;
         
         double ny = -1;//y part has to be negative since its always going up!
         double nx = -1/perp;//since ny/nx should be perp
